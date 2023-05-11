@@ -1,18 +1,31 @@
 import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { Container } from "@mui/material";
 
 type countItemType = {
   time: string;
   step: number;
 };
 
+function getRandomColor() {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
 function Counter () {
   const [step, setStep] = useState(1);
   const [count, setCount] = useState<countItemType[]>([]);
 
   return (
-    <div>
+    <div style={{
+      border: "10px solid " + getRandomColor(),
+      padding: "20px"
+    }}>
       <h1>Counter</h1>
       <input 
         type="number" 
@@ -57,7 +70,14 @@ function Counter () {
 function App() {
   return (
     <div className="App">
-      <Counter></Counter>
+      <Container>
+        <Counter></Counter>
+        <Counter></Counter>
+        <Counter></Counter>
+        <Counter></Counter>
+        <Counter></Counter>
+        <Counter></Counter>
+      </Container>
     </div>
   );
 }
