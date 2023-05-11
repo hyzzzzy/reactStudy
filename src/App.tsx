@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { Container, Grid } from "@mui/material";
+import { Container, Grid, Button } from "@mui/material";
 
 type countItemType = {
   time: string;
@@ -24,7 +24,9 @@ function Counter () {
   return (
     <div style={{
       border: "10px solid " + getRandomColor(),
-      padding: "20px"
+      padding: "20px",
+      backgroundColor: getRandomColor(),
+      boxShadow: "5px 5px 5px #888888"
     }}>
       <h1>Counter</h1>
       <input 
@@ -33,6 +35,7 @@ function Counter () {
         onChange={(e) => {
           setStep(Number(e.target.value))
         }}/>
+      <Button variant="contained">+</Button>
       <button onClick={() => {
         const newCountItem: countItemType = { 
           time: new Date().toLocaleTimeString(), 
