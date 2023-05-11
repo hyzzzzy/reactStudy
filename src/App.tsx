@@ -2,8 +2,14 @@ import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+type countItemType = {
+  time: string;
+  step: number;
+};
+
 function Counter () {
   const [step, setStep] = useState(1);
+  const [count, setCount] = useState<countItemType[]>([]);
 
   return (
     <div>
@@ -14,7 +20,16 @@ function Counter () {
         onChange={(e) => {
           setStep(Number(e.target.value))
         }}/>
-      <button>+</button> 👉 {step}
+      <button onClick={() => {
+        const newCountItem: countItemType = { 
+          time: new Date().toLocaleTimeString(), 
+          step,
+        };
+
+        setCount([...count, newCountItem]);
+      }}>+</button> 👉 {count.reduce((prev, curr) => {
+        return prev + curr.step
+      }, 0)}
       <table>
         <thead>
           <tr>
@@ -24,8 +39,14 @@ function Counter () {
         </thead>
         <tbody>
           <tr>
-            <td>1:00</td>
-            <td>5</td>
+            {count.map((value, index) => {
+              return (
+                <tr key={index}>
+                  <td>{value.time}</td>
+                  <td>{value.step}</td>
+                </tr>
+                )
+            })}
           </tr>
         </tbody>
       </table>
