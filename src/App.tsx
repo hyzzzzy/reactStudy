@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { Container } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 
 type countItemType = {
   time: string;
@@ -71,12 +71,20 @@ function App() {
   return (
     <div className="App">
       <Container>
-        <Counter></Counter>
-        <Counter></Counter>
-        <Counter></Counter>
-        <Counter></Counter>
-        <Counter></Counter>
-        <Counter></Counter>
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={6} md={4}>
+            <Counter></Counter>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Counter></Counter>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Counter></Counter>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Counter></Counter>
+          </Grid>
+        </Grid>
       </Container>
     </div>
   );
