@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { 
@@ -10,6 +10,38 @@ type countItemType = {
   step: number;
 };
 
+function Counter3() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    fetch('http://localhost:9999/counter')
+      .then(res => res.json())
+      .then((result) => {
+        console.log(result)
+        setCount(result.value)
+      })
+  }, []);
+
+
+  return (
+    <div style={{ border: "10px solid gray", padding: 20 }}>
+      <h1>Counter - Ajax & useEffect</h1>
+      <button onClick={() => {
+        fetch("http://localhost:9999/counter", {
+          method: 'PATCH',
+          body: JSON.stringify({ value: count + 1 }),
+          headers: {
+              'Content-Type': 'application/json'
+          },
+        })
+          .then((resp)=>resp.json())
+          .then((result)=>{
+              setCount(result.value);
+          })
+      }}>+</button> {count}
+    </div>
+  );
+}
 function getRandomColor() {
   const letters = "0123456789ABCDEF";
   let color = "#";
@@ -108,7 +140,10 @@ function App() {
     <div className="App">
       <Container>
         <Grid container spacing={1}>
-        <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={6} md={4}>
+            <Counter3></Counter3>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
             <Counter2></Counter2>
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
