@@ -1,11 +1,12 @@
-import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
-import React, { useState } from "react";
+import { PayloadAction, configureStore, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import React, { useEffect, useState } from "react";
 import { Provider, useDispatch, useSelector } from "react-redux";
 
 // 초기 상태 값 정의
 const counterInitialState = {
   value: 11,
   step: 2,
+  // 통신 상태를 표시하는 값
   loading: false,
 };
 
@@ -21,12 +22,37 @@ const counterReducers = {
   },
 };
 
+// 서버 통신용 값을 읽을 때 사용하는 thunk
+// couter/read는 action.type (액션명)
+const counterRead = createAsyncThunk("counter/read", async () => {
+  const res = await fetch("http://localhost:9999/counter/");
+  const result = await res.json();
+  return result;
+});
+
+const counterExtraReducers = (builder: any) => {
+  builder
+    // 비동기 로직이 미완성 (로딩중)
+    .addCase(counterRead.pending, (state: any) => {
+      console.log("loading...");
+      state.loading = true;
+    })
+    // @ts-ignore
+    // 비동기 로직이 성공적으로 이행됐을 때 
+    .addCase(counterRead.fulfilled, (state: any, action) => {
+      console.log("loaded", action);
+      state.loading = false;
+      state.value = action.payload.value;
+    });
+};
+
 // 목적에 맞는 state와 reducer를 그룹핑 한 것이 slice, slice를 정의
 const counterSlice = createSlice({
   // action 명: counter
   name: "counter",
   initialState: counterInitialState,
   reducers: counterReducers,
+  extraReducers: counterExtraReducers,
 });
 
 // slice를 store에 등록(형성)
@@ -54,34 +80,39 @@ function Counter1() {
   const loading = useSelector((state: any) => state.counter.loading);
   
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    // @ts-ignore
+    dispatch(counterRead());
+  }, []);
+
+
   if (loading) return <div>Loading...</div>
 
-  else {
-    return (
-      <div>
-        <h1>Counter</h1>
-        <input
-          type="number"
-          value={step}
-          onChange={(evt) => {
-            const step = Number(evt.target.value);
-            dispatch(counterSlice.actions.STEP(step));
-          }}
-        />
-        <button
-          onClick={() => {
-            // UP을 reducer에게 명령하는 action {type: 'counter/UP', payload: undefined}
-            const action = counterSlice.actions.UP();
-            // action 값을 store로 전송
-            dispatch(action);
-          }}
-        >
-          +
-        </button>
-        {count}
-      </div>
-    );
-  }
+  return (
+    <div>
+      <h1>Counter</h1>
+      <input
+        type="number"
+        value={step}
+        onChange={(evt) => {
+          const step = Number(evt.target.value);
+          dispatch(counterSlice.actions.STEP(step));
+        }}
+      />
+      <button
+        onClick={() => {
+          // UP을 reducer에게 명령하는 action {type: 'counter/UP', payload: undefined}
+          const action = counterSlice.actions.UP();
+          // action 값을 store로 전송
+          dispatch(action);
+        }}
+      >
+        +
+      </button>
+      {count}
+    </div>
+  );
 }
 
 function Counter2() {
