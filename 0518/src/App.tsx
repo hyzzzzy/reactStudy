@@ -12,9 +12,10 @@ const counterInitialState = {
 const counterReducers = {
   // UP, STEP은 action
   UP: (state: any) => {
-    state.value = state.value + 1;
+    state.value = state.value + state.step;
   },
   STEP: (state: any, action: PayloadAction<number>) => {
+    console.log(action)
     state.step = action.payload;
   },
 };
