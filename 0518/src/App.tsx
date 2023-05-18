@@ -6,6 +6,7 @@ import { Provider, useDispatch, useSelector } from "react-redux";
 const counterInitialState = {
   value: 11,
   step: 2,
+  loading: false,
 };
 
 // action과 state의 값에 따라서 다음 state의 값을 결정하는 reducer 함수
@@ -50,35 +51,44 @@ function Counter1() {
    */
   const count = useSelector((state: any) => state.counter.value);
   const step = useSelector((state: any) => state.counter.step);
+  const loading = useSelector((state: any) => state.counter.loading);
+  
   const dispatch = useDispatch();
-  return (
-    <div>
-      <h1>Counter</h1>
-      <input
-        type="number"
-        value={step}
-        onChange={(evt) => {
-          const step = Number(evt.target.value);
-          dispatch(counterSlice.actions.STEP(step));
-        }}
-      />
-      <button
-        onClick={() => {
-          // UP을 reducer에게 명령하는 action {type: 'counter/UP', payload: undefined}
-          const action = counterSlice.actions.UP();
-          // action 값을 store로 전송
-          dispatch(action);
-        }}
-      >
-        +
-      </button>
-      {count}
-    </div>
-  );
+  if (loading) return <div>Loading...</div>
+
+  else {
+    return (
+      <div>
+        <h1>Counter</h1>
+        <input
+          type="number"
+          value={step}
+          onChange={(evt) => {
+            const step = Number(evt.target.value);
+            dispatch(counterSlice.actions.STEP(step));
+          }}
+        />
+        <button
+          onClick={() => {
+            // UP을 reducer에게 명령하는 action {type: 'counter/UP', payload: undefined}
+            const action = counterSlice.actions.UP();
+            // action 값을 store로 전송
+            dispatch(action);
+          }}
+        >
+          +
+        </button>
+        {count}
+      </div>
+    );
+  }
 }
 
 function Counter2() {
   const count = useSelector((state: any) => state.counter.value);
+  const loading = useSelector((state: any) => state.counter.loading);
+
+  if (loading) return <div>Loading...</div>
   return <div>{count}</div>;
 }
 
