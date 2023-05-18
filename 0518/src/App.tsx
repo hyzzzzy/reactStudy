@@ -30,6 +30,22 @@ const counterRead = createAsyncThunk("counter/read", async () => {
   return result;
 });
 
+// 서버 통신 비동기 로직 change action
+const counterChange = createAsyncThunk(
+  "counter/change",
+  async (value: number) => {
+    const res = await fetch("http://localhost:9999/counter/", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ value }),
+    });
+    const result = await res.json();
+    return result;
+  }
+);
+
 const counterExtraReducers = (builder: any) => {
   builder
     // 비동기 로직이 미완성 (로딩중)
@@ -43,7 +59,20 @@ const counterExtraReducers = (builder: any) => {
       console.log("loaded", action);
       state.loading = false;
       state.value = action.payload.value;
-    });
+    })
+    // change action 로딩중
+    .addCase(counterChange.pending, (state: any) => {
+      state.loading = true;
+    })
+    // change action 성공
+    .addCase(
+      counterChange.fulfilled,
+      (state: any, action: PayloadAction<number>) => {
+        state.loading = false;
+        // @ts-ignore
+        state.value = action.payload.value;
+      }
+    );
 };
 
 // 목적에 맞는 state와 reducer를 그룹핑 한 것이 slice, slice를 정의
@@ -106,6 +135,8 @@ function Counter1() {
           const action = counterSlice.actions.UP();
           // action 값을 store로 전송
           dispatch(action);
+          // @ts-ignore
+          dispatch(counterChange(count + step));
         }}
       >
         +
