@@ -1,16 +1,14 @@
 import Layout from "@/components/Layout";
 import Head from "next/head";
 
-export default function Home() {
+export default function Read() {
   return (
     <>
       <Head>
         <title>WEB!</title>
       </Head>
-      <Layout>
-        <h2>Read!</h2>
-        Hello, Read!
-      </Layout>
+      <h2>Read!</h2>
+      Hello, Read!
     </>
   );
 }

@@ -1,32 +1,34 @@
+import Link from "next/link";
+// Link 컴포넌트를 이용하면 캐슁+사용자 경험의 연속성을 유지할 수 있다.
 // @ts-ignore
 export default function Layout(props) {
   return (
     <>
       <header>
         <h1>
-          <a href="/">WEB</a>
+          <Link href="/">WEB</Link>
         </h1>
       </header>
       <nav>
         <ol>
           <li>
-            <a href="/read/1">html</a>
+            <Link href="/read/1">html</Link>
           </li>
           <li>
-            <a href="/read/2">css</a>
+            <Link href="/read/2">css</Link>
           </li>
         </ol>
       </nav>
       <article>{props.children}</article>
       <ul>
         <li>
-          <a href="/create">Create</a>
+          <Link href="/create">Create</Link>
         </li>
         <li>
-          <a href="/update">Update</a>
+          <Link href="/update">Update</Link>
         </li>
         <li>
-          <a href="/delete">Delete</a>
+          <Link href="/delete">Delete</Link>
         </li>
       </ul>
     </>

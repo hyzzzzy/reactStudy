@@ -7,10 +7,8 @@ export default function Home() {
       <Head>
         <title>WEB!</title>
       </Head>
-      <Layout>
-        <h2>Create</h2>
-        Hello, Create!!!
-      </Layout>
+      <h2>Create</h2>
+      Hello, Create!!!
     </>
   );
 }
