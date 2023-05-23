@@ -1,4 +1,5 @@
-export default function Layout() {
+// @ts-ignore
+export default function Layout(props) {
   return (
     <>
       <header>
@@ -16,10 +17,7 @@ export default function Layout() {
           </li>
         </ol>
       </nav>
-      <article>
-        <h2>Welcome</h2>
-        Hello, World!
-      </article>
+      <article>{props.children}</article>
       <ul>
         <li>
           <a href="/create">Create</a>
