@@ -17,7 +17,7 @@ export default function Home() {
       </nav>
       <article>
         <h2>Welcome</h2>
-        Hello, Creat!
+        Hello, Read!
       </article>
       <ul>
         <li><a href="/create">Create</a></li>
