@@ -18,7 +18,9 @@ import { useEffect, useState } from "react";
  * 컴포넌트가 랜더링 되기 전에 서버 쪽에서 처리해야 할 작업은 getServerSideProps 를 구현해서 미리 처리한다.
  */
 export const getServerSideProps = async (context) => {
-  const resp = await fetch('http://localhost:3000/api/topics/' + context.query.id);
+  const resp = await fetch(
+    process.env.API_URL + '/api/topics/' + context.query.id
+  );
   const result = await resp.json();
   return {
     props: result,
